@@ -2,6 +2,7 @@ package services
 
 import (
 	"fmt"
+
 	"ingabam.com/inventoryapp/entity"
 	"ingabam.com/inventoryapp/repository"
 )
@@ -53,10 +54,31 @@ func AddProduct(
 	return nil
 }
 
-func ViewProduct() {
+func ViewProducts() {
+	tableheaders := []string{"ID", "NAME", "PRICE", "STOCK", "CATEGORY"}
+	for _ , header := range tableheaders{
+		fmt.Printf("%-10s  ", header)
+	}
+	fmt.Println("")
+	fmt.Println("--------------------------------------------------------------------")
+
+	if len(repository.Products) == 0{
+		fmt.Println("No products found")
+	}
+
+	for _ , prod := range repository.Products{
+		fmt.Printf("%-10d  %-10s  %-10.2f  %-10d %-10s\n", prod.ID, prod.Name, prod.Price, prod.Quantity, prod.Category )
+	}
 }
 
-func SearchProduct() {
+func SearchProduct(productId int) (entity.Product, error) {
+	for _ , prod := range repository.Products{
+		if prod.ID == productId{
+			return prod, nil
+		}
+	}
+	
+	return entity.Product{} , fmt.Errorf("Product not found")
 }
 
 func UpdateStock() {
@@ -65,8 +87,3 @@ func UpdateStock() {
 func RemoveProduct() {
 }
 
-func InventoryValue() {
-}
-
-func LowStock() {
-}

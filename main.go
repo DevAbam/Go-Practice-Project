@@ -14,8 +14,6 @@ func main() {
 		"Search Product",
 		"Update Stock",
 		"Remove Product",
-		"Inventory Value",
-		"Low Stock",
 		"Exit",
 	}
 
@@ -66,10 +64,18 @@ func main() {
 			fmt.Println("Product added successfully!")
 
 		case 2:
-			services.ViewProduct()
+			services.ViewProducts()
 
 		case 3:
-			services.SearchProduct()
+			var searchproductID int
+			fmt.Println("Enter the id of the product to search")
+			fmt.Scanln(&searchproductID)
+			prod, err := services.SearchProduct(searchproductID)
+			if err != nil {
+				fmt.Printf("product with id %d not found", searchproductID)
+				continue
+			}
+			fmt.Println("product found: ", prod)
 
 		case 4:
 			services.UpdateStock()
@@ -78,12 +84,6 @@ func main() {
 			services.RemoveProduct()
 
 		case 6:
-			services.InventoryValue()
-
-		case 7:
-			services.LowStock()
-
-		case 8:
 			fmt.Println("Goodbye!")
 			return
 
