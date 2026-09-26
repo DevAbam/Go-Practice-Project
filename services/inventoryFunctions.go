@@ -2,6 +2,7 @@ package services
 
 import (
 	"fmt"
+	"slices"
 
 	"ingabam.com/inventoryapp/entity"
 	"ingabam.com/inventoryapp/repository"
@@ -81,9 +82,41 @@ func SearchProduct(productId int) (entity.Product, error) {
 	return entity.Product{} , fmt.Errorf("Product not found")
 }
 
-func UpdateStock() {
-}
+func UpdateStock(productID int, amount int, operation string) error {
+	for i := range repository.Products {
 
-func RemoveProduct() {
+		if repository.Products[i].ID == productID {
+
+			switch operation {
+
+			case "add":
+				repository.Products[i].Quantity += amount
+				return nil
+
+			case "remove":
+
+				if repository.Products[i].Quantity < amount {
+					return fmt.Errorf("insufficient stock")
+				}
+
+				repository.Products[i].Quantity -= amount
+				return nil
+
+			default:
+				return fmt.Errorf("invalid operation")
+			}
+		}
+	}
+
+	return fmt.Errorf("product not found")
+}
+func RemoveProduct(productId int) error  {
+	for i := range repository.Products{
+		if repository.Products[i].ID == productId{
+			repository.Products = slices.Delete(repository.Products, i, i+1)
+			return  nil
+		}
+	}
+	return fmt.Errorf("product not deleted")
 }
 

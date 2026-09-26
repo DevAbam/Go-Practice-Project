@@ -78,10 +78,53 @@ func main() {
 			fmt.Println("product found: ", prod)
 
 		case 4:
-			services.UpdateStock()
+			var productID int
+			var amount int
+			var choice int
+
+			fmt.Println("Enter product ID:")
+			fmt.Scanln(&productID)
+
+			fmt.Println("1. Add Stock")
+			fmt.Println("2. Remove Stock")
+			fmt.Scanln(&choice)
+
+			fmt.Println("Enter amount:")
+			fmt.Scanln(&amount)
+
+			var operation string
+
+			switch choice {
+			case 1:
+				operation = "add"
+
+			case 2:
+				operation = "remove"
+
+			default:
+				fmt.Println("Invalid choice")
+				continue
+			}
+
+			err := services.UpdateStock(productID, amount, operation)
+
+			if err != nil {
+				fmt.Println(err)
+				continue
+			}
+
+			fmt.Println("Stock updated successfully")
 
 		case 5:
-			services.RemoveProduct()
+			var removeproductID int
+			fmt.Println("Enter the id of the product to remove")
+			fmt.Scanln(&removeproductID)
+			err := services.RemoveProduct(removeproductID)
+			if err!= nil{
+				fmt.Printf("product with id %d not deleted", removeproductID)
+				continue
+			}
+			fmt.Println("Product deleted succesfully")
 
 		case 6:
 			fmt.Println("Goodbye!")
