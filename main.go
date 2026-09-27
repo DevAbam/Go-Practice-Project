@@ -25,6 +25,7 @@ func main() {
 		}
 
 		fmt.Print("Choose an option: ")
+		fmt.Println("---------------------------------------------------------")
 		fmt.Scanln(&menuChoice)
 
 		switch menuChoice {
